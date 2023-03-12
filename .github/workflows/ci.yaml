@@ -2,6 +2,8 @@ name: CI
 on:
   pull_request:
     branches: [develop]
+  push:
+    branches: [develop]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,4 +18,13 @@ jobs:
 
       - name: test
         run: ./mvnw test
+
+      - name: build project
+        if: github.event_name == 'push'
+        run: ./mvnw package
+      - name: deploy
+        if: github.event_name == 'push'
+        run: ./mvnw deploy
+
+
 
